@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <record id="genre_action" model="ir.actions.act_window">
+            <field name="name">Genre action</field>
+            <!--            <field name="type">ir.actions.act_window</field>-->
+            <field name="res_model">library.genre</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="genre_view_form" model="ir.ui.view">
+            <field name="name">genre_view_form</field>
+            <field name="model">library.genre</field>
+            <field name="arch" type="xml">
+                <form string="genre_form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="books"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="genre_view_tree" model="ir.ui.view">
+            <field name="name">genre_view_tree</field>
+            <field name="model">library.genre</field>
+            <field name="arch" type="xml">
+                <tree string="genre_tree">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="books"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+
+<!--    Phan quyen theo record-->
+<!--    <record id="library_rule_genre2" model="ir.rule">-->
+<!--        <field name="name">Genre rule</field>-->
+<!--        <field name="model_id" ref="library.model_library_genre"/>-->
+<!--        <field name="domain_force">[(1, '=', 1)]</field>-->
+<!--        <field name="groups" eval="[(4, ref('library.library_show_model_book_only_group'))]"/>-->
+<!--        <field name="perm_read" eval="False"/>-->
+<!--        <field name="perm_write" eval="False"/>-->
+<!--        <field name="perm_create" eval="False"/>-->
+<!--        <field name="perm_unlink" eval="False"/>-->
+<!--    </record>-->
+</odoo>

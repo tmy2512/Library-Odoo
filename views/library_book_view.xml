@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <record id="book_action" model="ir.actions.act_window">
+            <field name="name">book_action</field>
+            <field name="res_model">library.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">No tasks yet.</p>
+            </field>
+        </record>
+        <record id="book_action_update_book" model="ir.actions.server">
+            <field name="name">book_server_action</field>
+            <field name="model_id" ref="library.model_library_book"/>
+            <field name="state">code</field>
+            <field name="code">
+                record.write({'image_256_filename': 'Updated Book'})
+            </field>
+        </record>
+
+        <record id="book_action_create_book" model="ir.actions.server">
+            <field name="name">book_create_server_action</field>
+            <field name="model_id" ref="library.model_library_book"/>
+            <field name="state">code</field>
+            <field name="code">
+                new_book = env['library.book'].create({
+                'name': 'new book',
+                'author_ids' : [
+                (0, 0, {'name': 'Author 5'}),
+                (0, 0, {'name': 'Author 6'}),
+                ],
+                'genre_id': env['library.genre'].search([('name', '=', 'gen2')], limit=1).id,
+                'publisher_id' : env['library.publisher'].search([('name', '=', 'publish1')], limit=1).id,
+                'publish_date': '2023-10-10', # Đảm bảo định dạng đúng
+                'isbn': '978-3-16-148410-0', })
+            </field>
+        </record>
+
+
+        <record id="library_print_book" model="ir.actions.report">
+            <field name="name">print_book</field>
+            <field name="model">library.book</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">library.report_library_book</field>
+            <field name="report_file">library.report_library_book</field>
+            <field name="print_report_name">'Print Book'</field>
+            <field name="binding_model_id" ref="library.model_library_book"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <record id="book_view_form" model="ir.ui.view">
+            <field name="name">book_view_form</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                <form string="book_form">
+<!--                    <header>-->
+<!--                        <button name="%(book_action_update_book)d" type="action" string="updates book"-->
+<!--                                class="oe_highlight"/>-->
+<!--                        <button name="action_add_record" type="object" string="add more book"-->
+<!--                                class="oe_highlight"/>-->
+<!--                        &lt;!&ndash;                        <button name="%(library_print_book)d" type="action" string="Report book"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                class="oe_highlight"/>&ndash;&gt;-->
+<!--                    </header>-->
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="author_ids" widget="many2many_tags"/>
+                            <field name="genre_id"/>
+                            <field name="publisher_id"/>
+                            <field name="publish_date"/>
+                            <field name="isbn"/>
+                            <field name="price"/>
+                            <field name="image_256"/>
+                            <field name="image_256_filename"/>
+                            <field name="created_time"/>
+
+                        </group>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+
+        <record id="library.book_view_tree" model="ir.ui.view">
+            <field name="name">book_view_tree</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                <tree string="book_tree">
+                    <field name="name"/>
+                    <field name="author_ids"/>
+                    <field name="genre_id"/>
+                    <field name="publisher_id"/>
+                    <field name="publish_date"/>
+                    <field name="isbn"/>
+                    <field name="price"/>
+                    <field name="image_256" widget="image"/>
+                    <field name="image_256_filename"/>
+                    <field name="created_time"/>
+                </tree>
+            </field>
+        </record>
+
+        <template id="report_library_book">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="book">
+                    <div class="page">
+                        <h2>Book Information</h2>
+                        <p>
+                            <strong>Name:</strong>
+                            <t t-esc="book.name"/>
+                        </p>
+                        <p>
+                            <strong>Authors:</strong>
+                            <t t-foreach="book.author_ids" t-as="author">
+                                <t t-esc="author.name"/>
+                                <t t-if="not author == book.author_ids[-1]">,</t>
+                            </t>
+                        </p>
+                        <p>
+                            <strong>Genre:</strong>
+                            <t t-esc="book.genre_id.name"/>
+                        </p>
+                        <p>
+                            <strong>Publisher:</strong>
+                            <t t-esc="book.publisher_id.name"/>
+                        </p>
+                        <p>
+                            <strong>Publish Date:</strong>
+                            <t t-esc="book.publish_date"/>
+                        </p>
+                        <p>
+                            <strong>ISBN:</strong>
+                            <t t-esc="book.isbn"/>
+                        </p>
+                        <p>
+                            <strong>Price:</strong>
+                            <t t-esc="book.price"/>
+                            USD
+                        </p>
+                        <img t-if="book.image_256" t-att-src="'data:image/png;base64,' + book.image_256"
+                             style="width: 100px;"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

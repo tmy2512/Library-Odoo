@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem id="library_root" name="Library2" />
+    <!-- This Menu Item Must have a parent -->
+
+    <menuitem id="library_book_categ" name="Book" parent="library_root" sequence="2"/>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="library_book_action" name="Book action" parent="library_book_categ" action="book_action"/>
+
+    <menuitem id="library_genre_categ" name="Genre" parent="library_root" sequence="2" />
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="library_genre_action" name="Genre action" parent="library_genre_categ" action="genre_action"/>
+
+    <menuitem id="library_publisher_categ" name="Publisher" parent="library_root" sequence="2" />
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="library_publisher_act" name="Publisher action" parent="library_publisher_categ"
+              action="library.publisher_action"/>
+
+    <menuitem id="library_author_categ" name="Author" parent="library_root" sequence="2"/>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="library_author_action" name="Author action" parent="library_author_categ" action="author_action"/>
+
+    <menuitem id="library_test_categ" name="Test client action" parent="library_root" sequence="2"/>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="library_test_action" name="Test action" parent="library_test_categ" action="author_action"/>
+
+</odoo>
